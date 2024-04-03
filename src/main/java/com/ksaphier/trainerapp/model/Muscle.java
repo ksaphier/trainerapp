@@ -11,7 +11,7 @@ import lombok.Data;
 
 @Entity
 @Data
-public class Exercise {
+public class Muscle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -20,7 +20,7 @@ public class Exercise {
     private String name;
     private String description;
 
-    // Many-to-Many relationship with Muscle
-    @ManyToMany
-    private Set<Muscle> muscles;
+    // Many-to-Many relationship with Exercise
+    @ManyToMany(mappedBy = "muscles")
+    private Set<Exercise> exercises;
 }
