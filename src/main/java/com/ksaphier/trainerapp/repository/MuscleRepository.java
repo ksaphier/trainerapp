@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface MuscleRepository extends JpaRepository<Muscle, Long> {
-    // Custom method to find muscles by exercise name
+    // Custom method to find muscles by exercise id
     @Query("SELECT m FROM Muscle m JOIN m.exercises e WHERE e.id = :exerciseId")
     List<Muscle> findByExercisesId(Long exerciseId);
 }
