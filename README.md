@@ -86,7 +86,7 @@ import lombok.Data;
 
 // Use @Entity to mark them as JPA entities.
 @Entity
-// asdf
+
 @Data
 public class Exercise {
 
