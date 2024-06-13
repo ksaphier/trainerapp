@@ -1,8 +1,10 @@
 package com.ksaphier.trainerapp.controller;
 
+import com.ksaphier.trainerapp.dto.WorkoutDetailsDto;
 import com.ksaphier.trainerapp.model.Workout;
 import com.ksaphier.trainerapp.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +51,11 @@ public class WorkoutController {
         workout.setDescription(workoutDetails.getDescription());
 
         return workoutService.saveWorkout(workout);
+    }
+
+    @GetMapping("/{id}/details")
+    public ResponseEntity<WorkoutDetailsDto> getWorkoutDetails(@PathVariable Long id) {
+        WorkoutDetailsDto workoutDetails = workoutService.getWorkoutDetails(id);
+        return ResponseEntity.ok(workoutDetails);
     }
 }
