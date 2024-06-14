@@ -1,9 +1,12 @@
 package com.ksaphier.trainerapp.service;
 
+import com.ksaphier.trainerapp.dto.AddExerciseToWorkoutRequest;
 import com.ksaphier.trainerapp.dto.SimplifiedExerciseDto;
 import com.ksaphier.trainerapp.dto.WorkoutDetailsDto;
+import com.ksaphier.trainerapp.model.Exercise;
 import com.ksaphier.trainerapp.model.Workout;
 import com.ksaphier.trainerapp.model.WorkoutExercise;
+import com.ksaphier.trainerapp.repository.ExerciseRepository;
 import com.ksaphier.trainerapp.repository.WorkoutExerciseRepository;
 import com.ksaphier.trainerapp.repository.WorkoutRepository;
 
@@ -41,6 +44,26 @@ public class WorkoutService {
                 .collect(Collectors.toList());
 
         return new WorkoutDetailsDto(workout, exercises);
+    }
+
+    @Autowired
+    ExerciseRepository exerciseRepository;
+
+    public WorkoutExercise addExerciseToWorkout(AddExerciseToWorkoutRequest request) {
+        Workout workout = workoutRepository.findById(request.getWorkoutId())
+                .orElseThrow(() -> new EntityNotFoundException("Workout not found"));
+        Exercise exercise = exerciseRepository.findById(request.getExerciseId())
+                .orElseThrow(() -> new EntityNotFoundException("Exercise not found"));
+
+        WorkoutExercise workoutExercise = new WorkoutExercise();
+        workoutExercise.setWorkout(workout);
+        workoutExercise.setExercise(exercise);
+        workoutExercise.setSeries(request.getSeries());
+        workoutExercise.setReps(request.getReps());
+        workoutExercise.setRest(request.getRest());
+        workoutExercise.setWeight(request.getWeight());
+
+        return workoutExerciseRepository.save(workoutExercise);
     }
 
     @Autowired

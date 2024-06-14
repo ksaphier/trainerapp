@@ -1,7 +1,9 @@
 package com.ksaphier.trainerapp.controller;
 
+import com.ksaphier.trainerapp.dto.AddExerciseToWorkoutRequest;
 import com.ksaphier.trainerapp.dto.WorkoutDetailsDto;
 import com.ksaphier.trainerapp.model.Workout;
+import com.ksaphier.trainerapp.model.WorkoutExercise;
 import com.ksaphier.trainerapp.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +59,11 @@ public class WorkoutController {
     public ResponseEntity<WorkoutDetailsDto> getWorkoutDetails(@PathVariable Long id) {
         WorkoutDetailsDto workoutDetails = workoutService.getWorkoutDetails(id);
         return ResponseEntity.ok(workoutDetails);
+    }
+
+    @PostMapping("/addExercise")
+    public ResponseEntity<WorkoutExercise> addExerciseToWorkout(@RequestBody AddExerciseToWorkoutRequest request) {
+        WorkoutExercise workoutExercise = workoutService.addExerciseToWorkout(request);
+        return ResponseEntity.ok(workoutExercise);
     }
 }
