@@ -2,6 +2,10 @@ package com.ksaphier.trainerapp.service;
 
 import com.ksaphier.trainerapp.model.Exercise;
 import com.ksaphier.trainerapp.repository.ExerciseRepository;
+import com.ksaphier.trainerapp.repository.WorkoutExerciseRepository;
+
+import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -12,6 +16,9 @@ import java.util.Optional;
 public class ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
+
+    @Autowired
+    private WorkoutExerciseRepository workoutExerciseRepository;
 
     @Autowired
     public ExerciseService(ExerciseRepository exerciseRepository) {
@@ -30,7 +37,10 @@ public class ExerciseService {
         return exerciseRepository.save(exercise);
     }
 
+    @Transactional
     public void deleteExercise(@NonNull Long id) {
+        workoutExerciseRepository.deleteByExerciseId(id);
+
         exerciseRepository.deleteById(id);
     }
 }

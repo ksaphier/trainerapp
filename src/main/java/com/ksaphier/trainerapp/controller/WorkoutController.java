@@ -4,6 +4,7 @@ import com.ksaphier.trainerapp.dto.AddExerciseToWorkoutRequest;
 import com.ksaphier.trainerapp.dto.WorkoutDetailsDto;
 import com.ksaphier.trainerapp.model.Workout;
 import com.ksaphier.trainerapp.model.WorkoutExercise;
+import com.ksaphier.trainerapp.service.WorkoutExerciseService;
 import com.ksaphier.trainerapp.service.WorkoutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,12 @@ public class WorkoutController {
     private final WorkoutService workoutService;
 
     @Autowired
+    private final WorkoutExerciseService workoutExerciseService;
+
+    @Autowired
     public WorkoutController(WorkoutService workoutService) {
         this.workoutService = workoutService;
+        this.workoutExerciseService = new WorkoutExerciseService();
     }
 
     @GetMapping
@@ -65,5 +70,10 @@ public class WorkoutController {
     public ResponseEntity<WorkoutExercise> addExerciseToWorkout(@RequestBody AddExerciseToWorkoutRequest request) {
         WorkoutExercise workoutExercise = workoutService.addExerciseToWorkout(request);
         return ResponseEntity.ok(workoutExercise);
+    }
+
+    @DeleteMapping("/deleteExercise/{id}")
+    public void deleteExerciseFromWorkout(@PathVariable Long id) {
+        workoutExerciseService.deleteExerciseFromWorkout(id);
     }
 }

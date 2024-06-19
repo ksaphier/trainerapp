@@ -9,4 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkoutExerciseRepository extends JpaRepository<WorkoutExercise, Long> {
     List<WorkoutExercise> findByWorkoutId(Long workoutId);
+
+    void deleteByExerciseId(Long exerciseId);
+
+    void deleteByWorkoutId(Long workoutId);
 }
