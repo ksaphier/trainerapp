@@ -4,8 +4,12 @@ import com.ksaphier.trainerapp.dto.AddExerciseToWorkoutRequest;
 import com.ksaphier.trainerapp.dto.WorkoutDetailsDto;
 import com.ksaphier.trainerapp.model.Workout;
 import com.ksaphier.trainerapp.model.WorkoutExercise;
+import com.ksaphier.trainerapp.service.JwtTokenProvider;
 import com.ksaphier.trainerapp.service.WorkoutExerciseService;
 import com.ksaphier.trainerapp.service.WorkoutService;
+
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
@@ -18,19 +22,22 @@ import java.util.List;
 public class WorkoutController {
 
     private final WorkoutService workoutService;
-
-    @Autowired
     private final WorkoutExerciseService workoutExerciseService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public WorkoutController(WorkoutService workoutService) {
+    public WorkoutController(WorkoutService workoutService, WorkoutExerciseService workoutExerciseService,
+            JwtTokenProvider jwtTokenProvider) {
         this.workoutService = workoutService;
-        this.workoutExerciseService = new WorkoutExerciseService();
+        this.workoutExerciseService = workoutExerciseService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @GetMapping
-    public List<Workout> getAllWorkouts() {
-        return workoutService.findAllWorkouts();
+    public List<Workout> getAllWorkouts(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7);
+        Long userId = jwtTokenProvider.getUserIdFromToken(token);
+        return workoutService.findAllWorkoutsByUser(userId);
     }
 
     @GetMapping("/{id}")
@@ -40,7 +47,10 @@ public class WorkoutController {
     }
 
     @PostMapping
-    public Workout addWorkout(@RequestBody @NonNull Workout workout) {
+    public Workout addWorkout(@RequestBody @NonNull Workout workout, HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7);
+        Long userId = jwtTokenProvider.getUserIdFromToken(token);
+        workout.setUserId(userId);
         return workoutService.saveWorkout(workout);
     }
 

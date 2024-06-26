@@ -9,5 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface WorkoutRepository extends JpaRepository<Workout, Long> {
     List<Workout> findByName(String name);
+
     // Custom query methods can be added here
+    List<Workout> findAllByUserId(Long userId); // Changed to Long
 }

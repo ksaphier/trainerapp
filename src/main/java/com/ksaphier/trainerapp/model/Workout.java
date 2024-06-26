@@ -17,4 +17,6 @@ public class Workout {
     private String name;
     private String description;
     private String type;
+    // user id
+    private Long userId;
 }

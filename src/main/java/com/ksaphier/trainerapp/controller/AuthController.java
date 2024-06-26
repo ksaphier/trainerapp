@@ -36,4 +36,5 @@ public class AuthController {
         String jwt = authService.authenticateUser(request);
         return ResponseEntity.ok(jwt);
     }
+
 }

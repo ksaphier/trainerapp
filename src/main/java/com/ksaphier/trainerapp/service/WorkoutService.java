@@ -92,4 +92,8 @@ public class WorkoutService {
 
         workoutRepository.deleteById(id);
     }
+
+    public List<Workout> findAllWorkoutsByUser(Long userId) {
+        return workoutRepository.findAllByUserId(userId);
+    }
 }
