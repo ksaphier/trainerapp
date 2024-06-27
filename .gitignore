@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Ignore local batch script for running the app
+run_app.bat
+
+# Ignore application.properties file
+/src/main/resources/application.properties
